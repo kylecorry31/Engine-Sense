@@ -9,9 +9,4 @@
         android:id="@+id/action_codes"
         android:name="com.kylecorry.enginesense.ui.CodesFragment"
         android:label="CodesFragment" />
-
-    <fragment
-        android:id="@+id/action_info"
-        android:name="com.kylecorry.enginesense.ui.InfoFragment"
-        android:label="InfoFragment" />
 </navigation>
