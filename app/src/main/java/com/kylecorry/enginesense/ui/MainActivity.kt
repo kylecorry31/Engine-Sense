@@ -88,7 +88,15 @@ class MainActivity : AndromedaActivity() {
     private fun startApp() {
         lifecycleScope.launch {
             val existingAddress: String? = null // TODO: Load from settings
-            val addr = existingAddress ?: getDevice()?.address ?: return@launch
+            val addr = existingAddress ?: getDevice()?.address
+            if (addr == null){
+                withContext(Dispatchers.Main) {
+                    Alerts.toast(this@MainActivity, getString(R.string.unable_to_connect))
+                    // TODO: Clear last address
+                    startApp()
+                }
+                return@launch
+            }
             try {
                 connect(addr)
                 // TODO: Save address to settings
