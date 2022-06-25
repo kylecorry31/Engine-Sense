@@ -2,16 +2,13 @@ package com.kylecorry.enginesense.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.toast
-import com.kylecorry.andromeda.core.system.Intents
 import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.databinding.FragmentCodesBinding
 import com.kylecorry.enginesense.infrastructure.bluetooth.BluetoothOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.infrastructure.bluetooth.IOnboardDiagnostics
-import com.kylecorry.enginesense.infrastructure.bluetooth.MockOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.ui.lists.TroubleCodeListItemMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,12 +16,7 @@ import kotlinx.coroutines.withContext
 class CodesFragment : BoundFragment<FragmentCodesBinding>() {
 
     private var device: IOnboardDiagnostics? = null
-    private val mapper by lazy {
-        TroubleCodeListItemMapper(requireContext()) {
-            val intent = Intents.url("https://${it.code}.autotroublecode.com/")
-            startActivity(intent)
-        }
-    }
+    private val mapper by lazy { TroubleCodeListItemMapper(requireContext()) }
     private val timer = Timer {
         runInBackground {
             scan()
