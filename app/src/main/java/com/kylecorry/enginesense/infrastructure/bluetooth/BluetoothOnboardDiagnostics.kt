@@ -65,7 +65,7 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
     }
 
     private suspend fun getCodes(command: ObdCommand): List<String> = withContext(Dispatchers.IO) {
-        execute(command)?.split("\n") ?: emptyList()
+        execute(command)?.split("\n")?.filter { it.isNotBlank() } ?: emptyList()
     }
 
 }
