@@ -45,6 +45,7 @@ class MainActivity : AndromedaActivity() {
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
         }
     }
 
@@ -103,6 +104,7 @@ class MainActivity : AndromedaActivity() {
                 ObdService.device?.initialize()
                 ObdService.notifyListeners()
             } catch (e: Exception){
+                e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     Alerts.toast(this@MainActivity, getString(R.string.unable_to_connect))
                     // TODO: Clear last address

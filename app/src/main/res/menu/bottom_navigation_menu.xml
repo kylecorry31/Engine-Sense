@@ -5,9 +5,15 @@
 
     <item
         android:id="@+id/action_codes"
-        android:title="@string/codes"
         android:icon="@drawable/engine"
-        app:showAsAction="always" />
+        android:title="@string/codes"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/info"
+        android:title="@string/info"
+        app:showAsAction="ifRoom" />
 
 
 </menu>
