@@ -1,2 +1,2 @@
 # Engine-Sense
- A simple OBD-II bluetooth readout app
+ A simple OBD-II trouble code bluetooth readout app
