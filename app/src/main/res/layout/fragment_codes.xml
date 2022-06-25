@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: Show a list -->
-    <TextView
+    <com.kylecorry.enginesense.ui.lists.AndromedaListView
         android:id="@+id/codes"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

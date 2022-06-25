@@ -4,4 +4,7 @@
     <string name="device">Device</string>
     <string name="unable_to_connect">Unable to connect to OBD</string>
     <string name="info">Info</string>
+    <string name="code_status_confirmed">Confirmed</string>
+    <string name="code_status_permanent">Permanent</string>
+    <string name="code_status_pending">Pending</string>
 </resources>
