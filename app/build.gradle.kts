@@ -67,7 +67,7 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     // Andromeda
-    val andromedaVersion = "4.0.0-beta02"
+    val andromedaVersion = "4.0.0-beta03"
     implementation("com.github.kylecorry31.andromeda:core:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:fragments:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:bluetooth:$andromedaVersion")

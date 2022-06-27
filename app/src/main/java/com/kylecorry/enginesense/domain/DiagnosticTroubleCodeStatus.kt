@@ -1,6 +1,6 @@
 package com.kylecorry.enginesense.domain
 
-enum class TroubleCodeStatus {
+enum class DiagnosticTroubleCodeStatus {
     Confirmed,
     Permanent,
     Pending

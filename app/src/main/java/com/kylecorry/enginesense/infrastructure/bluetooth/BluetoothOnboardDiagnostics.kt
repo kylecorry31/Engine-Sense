@@ -5,15 +5,14 @@ import com.github.pires.obd.commands.control.PendingTroubleCodesCommand
 import com.github.pires.obd.commands.control.PermanentTroubleCodesCommand
 import com.github.pires.obd.commands.control.TroubleCodesCommand
 import com.github.pires.obd.commands.control.VinCommand
-import com.github.pires.obd.commands.protocol.EchoOffCommand
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand
-import com.github.pires.obd.commands.protocol.TimeoutCommand
+import com.github.pires.obd.commands.protocol.*
+import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand
 import com.github.pires.obd.enums.ObdProtocols
 import com.kylecorry.andromeda.bluetooth.IBluetoothDevice
-import com.kylecorry.enginesense.domain.TroubleCode
-import com.kylecorry.enginesense.domain.TroubleCodeStatus
+import com.kylecorry.enginesense.domain.DiagnosticTroubleCode
+import com.kylecorry.enginesense.domain.DiagnosticTroubleCodeStatus
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboardDiagnostics {
@@ -25,11 +24,16 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
             return@withContext
         }
         device.connect()
+
+        execute(ObdResetCommand())
+        delay(500)
+
         val commands = listOf(
             EchoOffCommand(),
             LineFeedOffCommand(),
             TimeoutCommand(125),
-            SelectProtocolCommand(ObdProtocols.AUTO)
+            SelectProtocolCommand(ObdProtocols.AUTO),
+            AmbientAirTemperatureCommand()  // Gets a reading to initialize
         )
         commands.forEach { execute(it) }
         isConnected = true
@@ -43,14 +47,18 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
         device.disconnect()
     }
 
-    override suspend fun getTroubleCodes(): List<TroubleCode> {
+    override suspend fun getTroubleCodes(): List<DiagnosticTroubleCode> {
         val pending = getCodes(PendingTroubleCodesCommand())
         val permanent = getCodes(PermanentTroubleCodesCommand())
         val confirmed = getCodes(TroubleCodesCommand())
 
-        return confirmed.map { TroubleCode(it, TroubleCodeStatus.Confirmed) } +
-                permanent.map { TroubleCode(it, TroubleCodeStatus.Permanent) } +
-                pending.map { TroubleCode(it, TroubleCodeStatus.Pending) }
+        return confirmed.map { DiagnosticTroubleCode(it, DiagnosticTroubleCodeStatus.Confirmed) } +
+                permanent.map { DiagnosticTroubleCode(it, DiagnosticTroubleCodeStatus.Permanent) } +
+                pending.map { DiagnosticTroubleCode(it, DiagnosticTroubleCodeStatus.Pending) }
+    }
+
+    override suspend fun clearTroubleCodes() {
+        execute(ResetTroubleCodesCommand())
     }
 
     override suspend fun getVIN(): String {

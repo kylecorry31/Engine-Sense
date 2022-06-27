@@ -1,8 +1,11 @@
 package com.kylecorry.enginesense.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.kylecorry.andromeda.alerts.toast
+import com.kylecorry.andromeda.bluetooth.BluetoothScanner
+import com.kylecorry.andromeda.core.sensors.asLiveData
 import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.enginesense.R
@@ -55,9 +58,14 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
         connect()
+        val sensor = BluetoothScanner(requireContext())
+        sensor.asLiveData().observe(this) {
+            println(sensor.devices.map { it.name })
+        }
     }
 
     override fun onPause() {
