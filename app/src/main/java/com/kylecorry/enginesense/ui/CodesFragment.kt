@@ -14,6 +14,7 @@ import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.databinding.FragmentCodesBinding
 import com.kylecorry.enginesense.infrastructure.connection.BluetoothOnboardDiagnosticsChooser
+import com.kylecorry.enginesense.infrastructure.connection.MockOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
 import com.kylecorry.enginesense.ui.lists.TroubleCodeListItemMapper
 import kotlinx.coroutines.delay
@@ -33,8 +34,8 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
         }
     }
 
-    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
-//    private val obdChooser = MockOnboardDiagnosticsChooser()
+//    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
+    private val obdChooser = MockOnboardDiagnosticsChooser()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
