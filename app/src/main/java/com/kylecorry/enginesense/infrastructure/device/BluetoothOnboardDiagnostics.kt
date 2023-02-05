@@ -20,11 +20,11 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
     private var isConnected = false
 
     override fun isConnected(): Boolean {
-        return isConnected
+        return isConnected && device.isConnected()
     }
 
     override suspend fun connect() = withContext(Dispatchers.IO) {
-        if (isConnected) {
+        if (isConnected()) {
             return@withContext
         }
         device.connect()
@@ -44,7 +44,8 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
     }
 
     override suspend fun disconnect() = withContext(Dispatchers.IO) {
-        if (!isConnected) {
+        if (!isConnected()) {
+            isConnected = false
             return@withContext
         }
         isConnected = false
@@ -70,6 +71,9 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
     }
 
     private suspend fun execute(command: ObdCommand): String? = withContext(Dispatchers.IO) {
+        if (!isConnected()) {
+            return@withContext null
+        }
         val input = device.getInputStream()
         val output = device.getOutputStream()
         command.run(input, output)

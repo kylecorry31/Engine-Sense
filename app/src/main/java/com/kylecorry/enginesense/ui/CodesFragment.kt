@@ -8,6 +8,7 @@ import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.coroutines.onMain
 import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.enginesense.R
@@ -22,7 +23,7 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
     private var device: IOnboardDiagnostics? = null
     private val mapper by lazy { TroubleCodeListItemMapper(requireContext()) }
     private val loading by lazy {
-        val indicator = Alerts.loading(requireContext(), "Connecting")
+        val indicator = Alerts.loading(requireContext(), getString(R.string.connecting))
         indicator.hide()
         indicator
     }
@@ -32,7 +33,7 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
         }
     }
 
-        private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
+    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
 //    private val obdChooser = MockOnboardDiagnosticsChooser()
 
 
@@ -92,7 +93,11 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
 
     private fun disconnect() {
         inBackground {
-            device?.disconnect()
+            try {
+                device?.disconnect()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             UIUtils.setButtonState(binding.titlebar.leftButton, false)
         }
     }
@@ -109,6 +114,12 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
     }
 
     private suspend fun scan() {
+        if (device?.isConnected() == false) {
+            toast(getString(R.string.disconnected))
+            disconnect()
+            return
+        }
+
         val codes = device?.getTroubleCodes() ?: emptyList()
         val vin = device?.getVIN() ?: ""
         onMain {
@@ -119,7 +130,7 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
     }
 
     companion object {
-        private const val MAX_FAILURES = 4
+        private const val MAX_FAILURES = 8
         private const val RETRY_DURATION = 2000L
     }
 }
