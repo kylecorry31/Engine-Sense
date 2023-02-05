@@ -34,9 +34,15 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
         }
     }
 
-//    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
-    private val obdChooser = MockOnboardDiagnosticsChooser()
+    private val useMock = false
 
+    private val obdChooser by lazy {
+        if (useMock) {
+            MockOnboardDiagnosticsChooser()
+        } else {
+            BluetoothOnboardDiagnosticsChooser(requireContext())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
