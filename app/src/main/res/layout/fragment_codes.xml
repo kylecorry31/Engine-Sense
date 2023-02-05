@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.kylecorry.enginesense.ui.lists.AndromedaListView
+    <com.kylecorry.ceres.list.CeresListView
         android:id="@+id/codes"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

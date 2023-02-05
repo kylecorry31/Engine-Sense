@@ -1,7 +1,9 @@
-package com.kylecorry.enginesense.infrastructure.bluetooth
+package com.kylecorry.enginesense.infrastructure.connection
 
 import com.kylecorry.enginesense.domain.DiagnosticTroubleCode
 import com.kylecorry.enginesense.domain.DiagnosticTroubleCodeStatus
+import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
+import com.kylecorry.enginesense.infrastructure.device.MockOnboardDiagnostics
 
 class MockOnboardDiagnosticsChooser : IOnboardDiagnosticsChooser {
     override suspend fun getOBD(): IOnboardDiagnostics {

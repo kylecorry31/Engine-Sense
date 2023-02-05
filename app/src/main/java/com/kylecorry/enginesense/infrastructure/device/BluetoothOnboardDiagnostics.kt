@@ -1,4 +1,4 @@
-package com.kylecorry.enginesense.infrastructure.bluetooth
+package com.kylecorry.enginesense.infrastructure.device
 
 import com.github.pires.obd.commands.ObdCommand
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand

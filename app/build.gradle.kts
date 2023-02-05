@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:2.5.1")
     implementation("com.google.android.material:material:1.8.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
+
     // Andromeda
     val andromedaVersion = "5.0.0-beta32"
     implementation("com.github.kylecorry31.andromeda:core:$andromedaVersion")
@@ -78,6 +79,12 @@ dependencies {
     implementation("com.github.kylecorry31.andromeda:pickers:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:list:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:clipboard:$andromedaVersion")
+
+    // Ceres
+    val ceresVersion = "0.3.3"
+    implementation("com.github.kylecorry31.ceres:list:$ceresVersion")
+    implementation("com.github.kylecorry31.ceres:toolbar:$ceresVersion")
+    implementation("com.github.kylecorry31.ceres:badge:$ceresVersion")
 
     implementation("com.github.pires:obd-java-api:1.0")
 

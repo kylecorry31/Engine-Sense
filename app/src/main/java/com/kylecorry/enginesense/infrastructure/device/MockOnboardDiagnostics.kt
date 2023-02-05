@@ -1,4 +1,4 @@
-package com.kylecorry.enginesense.infrastructure.bluetooth
+package com.kylecorry.enginesense.infrastructure.device
 
 import com.kylecorry.enginesense.domain.DiagnosticTroubleCode
 

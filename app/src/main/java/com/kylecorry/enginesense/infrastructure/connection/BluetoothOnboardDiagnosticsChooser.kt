@@ -1,12 +1,16 @@
-package com.kylecorry.enginesense.infrastructure.bluetooth
+package com.kylecorry.enginesense.infrastructure.connection
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.kylecorry.andromeda.alerts.Alerts
+import com.kylecorry.andromeda.bluetooth.BluetoothScanner
 import com.kylecorry.andromeda.bluetooth.BluetoothService
+import com.kylecorry.andromeda.core.topics.asLiveData
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.enginesense.R
+import com.kylecorry.enginesense.infrastructure.device.BluetoothOnboardDiagnostics
+import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
@@ -39,8 +43,12 @@ class BluetoothOnboardDiagnosticsChooser(private val context: Context) :
 
     @SuppressLint("MissingPermission")
     private suspend fun getDevice(): BluetoothDevice? {
+
         val devices = withContext(Dispatchers.IO) {
             bluetooth.bondedDevices
+//            val sensor = BluetoothScanner(context)
+//            sensor.read()
+//            sensor.devices
         }
         return withContext(Dispatchers.Main) {
             suspendCoroutine { cont ->
