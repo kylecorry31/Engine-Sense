@@ -1,20 +1,14 @@
 package com.kylecorry.enginesense.ui
 
 import android.Manifest
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.kylecorry.andromeda.core.system.Exceptions
-import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.fragments.AndromedaActivity
 import com.kylecorry.enginesense.R
-import java.time.Duration
 
 class MainActivity : AndromedaActivity() {
 

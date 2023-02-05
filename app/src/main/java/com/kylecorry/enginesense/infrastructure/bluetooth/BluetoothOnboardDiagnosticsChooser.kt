@@ -40,7 +40,7 @@ class BluetoothOnboardDiagnosticsChooser(private val context: Context) :
     @SuppressLint("MissingPermission")
     private suspend fun getDevice(): BluetoothDevice? {
         val devices = withContext(Dispatchers.IO) {
-            bluetooth.devices
+            bluetooth.bondedDevices
         }
         return withContext(Dispatchers.Main) {
             suspendCoroutine { cont ->

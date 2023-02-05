@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.bluetooth.BluetoothScanner
-import com.kylecorry.andromeda.core.sensors.asLiveData
 import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.topics.asLiveData
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.databinding.FragmentCodesBinding
