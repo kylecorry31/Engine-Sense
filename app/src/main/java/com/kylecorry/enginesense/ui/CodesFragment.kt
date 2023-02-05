@@ -73,6 +73,11 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
                     }
                     loading.show()
                     device?.connect()
+
+                    // Force it into the catch block when it isn't connected
+                    if (device?.isConnected() != true) {
+                        throw Exception("Unable to connect")
+                    }
                     loading.hide()
                     break
                 } catch (e: Exception) {
