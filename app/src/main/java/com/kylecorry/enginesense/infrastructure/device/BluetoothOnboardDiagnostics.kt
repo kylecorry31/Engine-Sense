@@ -19,6 +19,10 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
 
     private var isConnected = false
 
+    override fun isConnected(): Boolean {
+        return isConnected
+    }
+
     override suspend fun connect() = withContext(Dispatchers.IO) {
         if (isConnected) {
             return@withContext

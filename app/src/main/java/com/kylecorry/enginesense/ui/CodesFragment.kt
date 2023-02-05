@@ -1,14 +1,21 @@
 package com.kylecorry.enginesense.ui
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.kylecorry.andromeda.alerts.toast
+import com.kylecorry.andromeda.core.coroutines.onMain
+import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.ui.Colors
 import com.kylecorry.andromeda.fragments.BoundFragment
+import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.databinding.FragmentCodesBinding
 import com.kylecorry.enginesense.infrastructure.connection.BluetoothOnboardDiagnosticsChooser
+import com.kylecorry.enginesense.infrastructure.connection.MockOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
 import com.kylecorry.enginesense.ui.lists.TroubleCodeListItemMapper
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +26,27 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
     private var device: IOnboardDiagnostics? = null
     private val mapper by lazy { TroubleCodeListItemMapper(requireContext()) }
     private val timer = Timer {
-        runInBackground {
+        inBackground {
             scan()
         }
     }
-    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
-//    private val obdChooser = MockOnboardDiagnosticsChooser()
+
+    //    private val obdChooser by lazy { BluetoothOnboardDiagnosticsChooser(requireContext()) }
+    private val obdChooser = MockOnboardDiagnosticsChooser()
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.titlebar.leftButton.setOnClickListener {
+            if (device?.isConnected() == true) {
+                disconnect()
+                device = null
+                // TODO: Clear saved device
+            } else {
+                connect()
+            }
+        }
+    }
 
     override fun generateBinding(
         layoutInflater: LayoutInflater,
@@ -34,10 +56,12 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
     }
 
     private fun connect() {
-        runInBackground {
+        inBackground {
             while (true) {
                 try {
-                    device = obdChooser.getOBD()
+                    if (device == null) {
+                        device = obdChooser.getOBD()
+                    }
                     device?.connect()
                     break
                 } catch (e: Exception) {
@@ -45,14 +69,15 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
                     e.printStackTrace()
                 }
             }
+            UIUtils.setButtonState(binding.titlebar.leftButton, true)
             scan()
         }
     }
 
     private fun disconnect() {
-        runInBackground {
+        inBackground {
             device?.disconnect()
-            device = null
+            UIUtils.setButtonState(binding.titlebar.leftButton, false)
         }
     }
 
@@ -70,11 +95,10 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
 
     private suspend fun scan() {
         val codes = device?.getTroubleCodes() ?: emptyList()
-
-        if (isBound) {
-            withContext(Dispatchers.Main) {
-                binding.codes.setItems(codes, mapper)
-            }
+        val vin = device?.getVIN() ?: ""
+        onMain {
+            binding.codes.setItems(codes, mapper)
+            binding.titlebar.subtitle.text = vin
         }
         timer.once(5000)
     }
