@@ -18,6 +18,7 @@ import com.kylecorry.enginesense.infrastructure.connection.MockOnboardDiagnostic
 import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
 import com.kylecorry.enginesense.ui.lists.TroubleCodeListItemMapper
 import kotlinx.coroutines.delay
+import java.io.IOException
 
 class CodesFragment : BoundFragment<FragmentCodesBinding>() {
 
@@ -132,12 +133,19 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
             return
         }
 
-        val codes = device?.getTroubleCodes() ?: emptyList()
-        val vin = device?.getVIN() ?: ""
-        onMain {
-            binding.codes.setItems(codes, mapper)
-            binding.titlebar.subtitle.text = vin
+        try {
+            val codes = device?.getTroubleCodes() ?: emptyList()
+            val vin = device?.getVIN() ?: ""
+            onMain {
+                binding.codes.setItems(codes, mapper)
+                binding.titlebar.subtitle.text = vin
+            }
+        } catch (e: Exception){
+            toast(getString(R.string.disconnected))
+            disconnect()
+            return
         }
+
         timer.once(5000)
     }
 

@@ -1,5 +1,6 @@
 package com.kylecorry.enginesense.infrastructure.device
 
+import android.util.Log
 import com.github.pires.obd.commands.ObdCommand
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand
 import com.github.pires.obd.commands.control.PermanentTroubleCodesCommand
@@ -29,17 +30,24 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
         }
         device.connect()
 
-        execute(ObdResetCommand())
-        delay(500)
-
-        val commands = listOf(
-            EchoOffCommand(),
-            LineFeedOffCommand(),
-            TimeoutCommand(125),
-            SelectProtocolCommand(ObdProtocols.AUTO)
-        )
-        commands.forEach { execute(it) }
         isConnected = true
+
+        try {
+            execute(ObdResetCommand())
+            delay(500)
+
+            val commands = listOf(
+                EchoOffCommand(),
+                LineFeedOffCommand(),
+                TimeoutCommand(125),
+                SelectProtocolCommand(ObdProtocols.AUTO),
+                AmbientAirTemperatureCommand() // Clear the bus
+            )
+            commands.forEach { execute(it) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            isConnected = false
+        }
     }
 
     override suspend fun disconnect() = withContext(Dispatchers.IO) {
@@ -77,7 +85,7 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
         val output = device.getOutputStream()
         command.run(input, output)
         val result = command.calculatedResult
-        println(result)
+        Log.d(javaClass.simpleName, "${command.name}: ${command.formattedResult}")
         result
     }
 
