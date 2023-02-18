@@ -39,7 +39,7 @@ class CodeRepo(context: Context) {
             '4' -> "Auxiliary emission controls"
             '5' -> "Vehicle speed control & idle control systems"
             '6' -> "Computer & output circuit"
-            '7' -> "Transmission"
+            '7', '8', '9' -> "Transmission"
             else -> null
         }
     }
