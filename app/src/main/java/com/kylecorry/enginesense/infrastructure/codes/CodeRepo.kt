@@ -40,6 +40,7 @@ class CodeRepo(context: Context) {
             '5' -> "Vehicle speed control & idle control systems"
             '6' -> "Computer & output circuit"
             '7', '8', '9' -> "Transmission"
+            'A', 'B', 'C' -> "Hybrid drive"
             else -> null
         }
     }
