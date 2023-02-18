@@ -36,8 +36,7 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
             EchoOffCommand(),
             LineFeedOffCommand(),
             TimeoutCommand(125),
-            SelectProtocolCommand(ObdProtocols.AUTO),
-            AmbientAirTemperatureCommand()  // Gets a reading to initialize
+            SelectProtocolCommand(ObdProtocols.AUTO)
         )
         commands.forEach { execute(it) }
         isConnected = true
@@ -77,7 +76,9 @@ class BluetoothOnboardDiagnostics(private val device: IBluetoothDevice) : IOnboa
         val input = device.getInputStream()
         val output = device.getOutputStream()
         command.run(input, output)
-        command.calculatedResult
+        val result = command.calculatedResult
+        println(result)
+        result
     }
 
     private suspend fun getCodes(command: ObdCommand): List<String> = withContext(Dispatchers.IO) {
