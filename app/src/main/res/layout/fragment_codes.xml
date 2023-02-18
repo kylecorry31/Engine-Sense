@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:leftButtonIcon="@drawable/engine"
+        app:rightButtonIcon="@drawable/ic_copy"
         app:title="@string/codes" />
 
     <com.kylecorry.ceres.list.CeresListView

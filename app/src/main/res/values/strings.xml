@@ -12,4 +12,5 @@
     <string name="unknown_code">Unknown</string>
     <string name="code_standard">Standard</string>
     <string name="code_manufacturer">Manufacturer</string>
+    <string name="copied">Copied</string>
 </resources>

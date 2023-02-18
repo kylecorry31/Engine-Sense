@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.toast
+import com.kylecorry.andromeda.clipboard.Clipboard
 import com.kylecorry.andromeda.core.coroutines.onMain
 import com.kylecorry.andromeda.core.time.Timer
-import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.databinding.FragmentCodesBinding
+import com.kylecorry.enginesense.domain.DiagnosticTroubleCode
 import com.kylecorry.enginesense.infrastructure.connection.BluetoothOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.infrastructure.connection.MockOnboardDiagnosticsChooser
 import com.kylecorry.enginesense.infrastructure.device.IOnboardDiagnostics
 import com.kylecorry.enginesense.ui.lists.TroubleCodeListItemMapper
 import kotlinx.coroutines.delay
-import java.io.IOException
 
 class CodesFragment : BoundFragment<FragmentCodesBinding>() {
 
@@ -34,6 +34,8 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
             scan()
         }
     }
+
+    private var codes: List<DiagnosticTroubleCode> = emptyList()
 
     private val useMock = false
 
@@ -54,6 +56,14 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
             } else {
                 connect()
             }
+        }
+
+        binding.titlebar.rightButton.setOnClickListener {
+            Clipboard.copy(
+                requireContext(),
+                codes.joinToString("\n") { it.code },
+                getString(R.string.copied)
+            )
         }
     }
 
@@ -134,13 +144,13 @@ class CodesFragment : BoundFragment<FragmentCodesBinding>() {
         }
 
         try {
-            val codes = device?.getTroubleCodes() ?: emptyList()
+            codes = device?.getTroubleCodes() ?: emptyList()
             val vin = device?.getVIN() ?: ""
             onMain {
                 binding.codes.setItems(codes, mapper)
                 binding.titlebar.subtitle.text = vin
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             toast(getString(R.string.disconnected))
             disconnect()
             return

@@ -49,7 +49,7 @@ class TroubleCodeListItemMapper(
                 Clipboard.copy(context, value.code, context.getString(R.string.copied_to_clipboard))
             }
         ) {
-            val intent = Intents.url("https://${value.code}.autotroublecode.com/")
+            val intent = Intents.url("https://obd2pros.com/dtc-codes/${value.code.lowercase()}/")
             context.startActivity(intent)
         }
     }
