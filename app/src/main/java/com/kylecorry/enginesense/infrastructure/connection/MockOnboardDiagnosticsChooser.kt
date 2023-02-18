@@ -9,7 +9,13 @@ class MockOnboardDiagnosticsChooser : IOnboardDiagnosticsChooser {
     override suspend fun getOBD(): IOnboardDiagnostics {
         return MockOnboardDiagnostics(
             "1234",
-            listOf(DiagnosticTroubleCode("P0100", DiagnosticTroubleCodeStatus.Confirmed))
+            listOf(
+                DiagnosticTroubleCode("P0100", DiagnosticTroubleCodeStatus.Confirmed),
+                DiagnosticTroubleCode("P18D4", DiagnosticTroubleCodeStatus.Confirmed),
+                DiagnosticTroubleCode("C0301", DiagnosticTroubleCodeStatus.Confirmed),
+                DiagnosticTroubleCode("C0700", DiagnosticTroubleCodeStatus.Confirmed),
+                DiagnosticTroubleCode("C0A00", DiagnosticTroubleCodeStatus.Confirmed),
+            )
         )
     }
 }

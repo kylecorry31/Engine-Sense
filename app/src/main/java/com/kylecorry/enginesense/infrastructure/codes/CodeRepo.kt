@@ -10,6 +10,39 @@ class CodeRepo(context: Context) {
         JsonConvert.fromJson<Codes>(text)
     }
 
+    fun getSystem(code: String): String? {
+        if (code.isEmpty()) {
+            return null
+        }
+        return when (code[0]) {
+            'P' -> "Powertrain"
+            'C' -> "Chassis"
+            'B' -> "Body"
+            'U' -> "Network"
+            else -> null
+        }
+    }
+
+    fun isStandard(code: String): Boolean {
+        return code.length >= 2 && code[1] == '0'
+    }
+
+    fun getCategory(code: String): String? {
+        if (code.length < 3) {
+            return null
+        }
+        return when (code[2]) {
+            '0' -> "Fuel and Air Metering and Auxiliary Emission Controls"
+            '1' -> "Fuel and Air Metering"
+            '2' -> "Fuel and Air Metering (injector circuit)"
+            '3' -> "Ignition systems or misfires"
+            '4' -> "Auxiliary emission controls"
+            '5' -> "Vehicle speed control & idle control systems"
+            '6' -> "Computer & output circuit"
+            '7' -> "Transmission"
+            else -> null
+        }
+    }
 
     fun getName(code: String): String? {
         return codes?.codes?.getOrDefault(code.uppercase(), null)

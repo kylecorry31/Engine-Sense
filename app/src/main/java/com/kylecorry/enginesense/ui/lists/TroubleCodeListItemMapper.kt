@@ -4,10 +4,7 @@ import android.content.Context
 import com.kylecorry.andromeda.clipboard.Clipboard
 import com.kylecorry.andromeda.core.system.Intents
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.ceres.list.ListItem
-import com.kylecorry.ceres.list.ListItemMapper
-import com.kylecorry.ceres.list.ListItemTag
-import com.kylecorry.ceres.list.ResourceListIcon
+import com.kylecorry.ceres.list.*
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.domain.DiagnosticTroubleCode
 import com.kylecorry.enginesense.domain.DiagnosticTroubleCodeStatus
@@ -20,7 +17,10 @@ class TroubleCodeListItemMapper(
     private val repo = CodeRepo.getInstance(context)
 
     override fun map(value: DiagnosticTroubleCode): ListItem {
+        val system = repo.getSystem(value.code)
+        val category = repo.getCategory(value.code)
         val name = repo.getName(value.code)
+        val isStandard = repo.isStandard(value.code)
         return ListItem(
             value.code.hashCode().toLong(),
             value.code.uppercase(),
@@ -35,6 +35,15 @@ class TroubleCodeListItemMapper(
                     null,
                     getStatusColor(value.status)
                 )
+            ),
+            data = listOfNotNull(
+                system?.let { ListItemData(it, null) },
+                category?.let { ListItemData(it, null) },
+                if (isStandard) {
+                    ListItemData(context.getString(R.string.code_standard), null)
+                } else {
+                    ListItemData(context.getString(R.string.code_manufacturer), null)
+                }
             ),
             longClickAction = {
                 Clipboard.copy(context, value.code, context.getString(R.string.copied_to_clipboard))
