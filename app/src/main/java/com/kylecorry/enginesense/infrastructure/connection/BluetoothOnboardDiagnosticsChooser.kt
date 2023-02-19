@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.kylecorry.andromeda.alerts.Alerts
-import com.kylecorry.andromeda.bluetooth.BluetoothScanner
 import com.kylecorry.andromeda.bluetooth.BluetoothService
-import com.kylecorry.andromeda.core.topics.asLiveData
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.enginesense.R
 import com.kylecorry.enginesense.infrastructure.device.BluetoothOnboardDiagnostics

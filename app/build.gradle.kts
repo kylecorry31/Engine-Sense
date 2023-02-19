@@ -53,7 +53,7 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10")
-    implementation("androidx.appcompat:appcompat:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -65,10 +65,11 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-service:2.5.1")
     implementation("com.google.android.material:material:1.8.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
     // Andromeda
-    val andromedaVersion = "5.0.0-beta33"
+    val andromedaVersion = "5.0.0-beta36"
     implementation("com.github.kylecorry31.andromeda:core:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:fragments:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:bluetooth:$andromedaVersion")
@@ -86,8 +87,6 @@ dependencies {
     implementation("com.github.kylecorry31.ceres:list:$ceresVersion")
     implementation("com.github.kylecorry31.ceres:toolbar:$ceresVersion")
     implementation("com.github.kylecorry31.ceres:badge:$ceresVersion")
-
-    implementation("com.github.pires:obd-java-api:1.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
