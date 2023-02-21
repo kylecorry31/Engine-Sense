@@ -1,5 +1,6 @@
 package com.kylecorry.enginesense.infrastructure.obd
 
+import android.util.Log
 import com.kylecorry.andromeda.core.io.readUntil
 import com.kylecorry.andromeda.core.io.write
 import com.kylecorry.enginesense.infrastructure.obd.commands.OBDCommand
@@ -25,8 +26,7 @@ class OnboardDiagnosticsService(
         // Read
         var response = input.readUntil('>')
 
-        // Remove whitespace
-//        response = response.replace(Regex("\\s"), "")
+        Log.d(javaClass.simpleName, "${command.trim()}: ${response.trim()}")
 
         // Remove bus messages
         response = response.replace("BUSINIT", "")
